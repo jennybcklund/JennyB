@@ -204,7 +204,7 @@ CREATE TABLE `film_has_director` (
 
 LOCK TABLES `film_has_director` WRITE;
 /*!40000 ALTER TABLE `film_has_director` DISABLE KEYS */;
-INSERT INTO `film_has_director` VALUES (1,1),(2,1),(11,1),(1,2),(3,2),(4,3),(5,4),(6,5),(12,5),(7,6),(8,7),(3,8),(9,8),(10,9),(11,10);
+INSERT INTO `film_has_director` VALUES (1,1),(2,1),(11,1),(1,2),(3,2),(4,3),(5,4),(6,5),(12,5),(13,5),(7,6),(8,7),(3,8),(9,8),(10,9),(11,10),(13,10);
 /*!40000 ALTER TABLE `film_has_director` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,9 +232,26 @@ CREATE TABLE `film_has_genre` (
 
 LOCK TABLES `film_has_genre` WRITE;
 /*!40000 ALTER TABLE `film_has_genre` DISABLE KEYS */;
-INSERT INTO `film_has_genre` VALUES (1,1),(2,2),(9,2),(11,2),(3,3),(12,3),(4,4),(10,4),(5,5),(6,5),(1,6),(6,6),(7,7),(5,8),(8,8);
+INSERT INTO `film_has_genre` VALUES (1,1),(2,1),(3,2),(4,2),(5,2),(9,2),(11,2),(1,3),(2,3),(3,3),(11,3),(10,4),(6,5),(12,5),(13,5),(6,6),(7,7),(4,8),(8,8);
 /*!40000 ALTER TABLE `film_has_genre` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `films_in_library`
+--
+
+DROP TABLE IF EXISTS `films_in_library`;
+/*!50001 DROP VIEW IF EXISTS `films_in_library`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `films_in_library` AS SELECT 
+ 1 AS `title`,
+ 1 AS `description`,
+ 1 AS `publicationYear`,
+ 1 AS `Genre`,
+ 1 AS `Director`,
+ 1 AS `Actor`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `genre`
@@ -320,6 +337,24 @@ LOCK TABLES `rentaldetails` WRITE;
 INSERT INTO `rentaldetails` VALUES (1,1,2,NULL),(2,11,3,NULL),(3,12,4,NULL),(4,10,6,NULL),(5,2,1,NULL),(6,3,4,'2018-03-29'),(7,4,10,'2018-03-07'),(8,5,5,'2018-02-23'),(9,6,1,'2018-03-17'),(10,7,9,'2018-01-11'),(11,8,12,'2018-03-02'),(12,9,13,'2018-01-16');
 /*!40000 ALTER TABLE `rentaldetails` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `films_in_library`
+--
+
+/*!50001 DROP VIEW IF EXISTS `films_in_library`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `films_in_library` AS select `f`.`title` AS `title`,`f`.`description` AS `description`,`f`.`publicationYear` AS `publicationYear`,group_concat(distinct `g`.`genreType` separator ', ') AS `Genre`,group_concat(distinct concat(`d`.`fname`,' ',`d`.`lname`) separator ', ') AS `Director`,group_concat(distinct concat(`a`.`fname`,' ',`a`.`lname`) separator ', ') AS `Actor` from ((((((`film` `f` left join `film_has_genre` `fg` on((`fg`.`idFilm` = `f`.`idFilm`))) left join `genre` `g` on((`g`.`idGenre` = `fg`.`idGenre`))) left join `film_has_director` `fd` on((`fd`.`idFilm` = `f`.`idFilm`))) left join `director` `d` on((`d`.`idDirector` = `fd`.`idDirector`))) left join `film_has_actor` `fa` on((`fa`.`idFilm` = `f`.`idFilm`))) left join `actor` `a` on((`a`.`idActor` = `fd`.`idDirector`))) group by `f`.`idFilm` order by `f`.`publicationYear` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -330,4 +365,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-03 13:43:02
+-- Dump completed on 2018-04-03 20:35:37
