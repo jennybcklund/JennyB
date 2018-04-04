@@ -277,6 +277,7 @@ DROP TABLE IF EXISTS `films_rented`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `films_rented` AS SELECT 
+ 1 AS `dueDate`,
  1 AS `FilmRented`,
  1 AS `Customer`,
  1 AS `Employee`*/;
@@ -416,7 +417,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `films_rented` AS select `f`.`title` AS `FilmRented`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee` from ((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `film` `f` on((`f`.`idFilm` = `rd`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `f`.`title` */;
+/*!50001 VIEW `films_rented` AS select `r`.`dueDate` AS `dueDate`,`f`.`title` AS `FilmRented`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee` from ((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `film` `f` on((`f`.`idFilm` = `rd`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `r`.`dueDate` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -430,4 +431,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-04 16:31:32
+-- Dump completed on 2018-04-04 16:57:26
