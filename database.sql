@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `jennyb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci */;
+USE `jennyb`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: jennyb
@@ -402,24 +404,6 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `show_film_in_genre`
---
-
-/*!50001 DROP VIEW IF EXISTS `show_film_in_genre`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `show_film_in_genre` AS select `g`.`genreType` AS `Genre`,group_concat(distinct `f`.`title` separator ', ') AS `Film` from ((`film_has_genre` `fg` left join `genre` `g` on((`g`.`idGenre` = `fg`.`idGenre`))) left join `film` `f` on((`f`.`idFilm` = `fg`.`idFilm`))) group by `g`.`genreType` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
 -- Final view structure for view `films_rented`
 --
 
@@ -446,4 +430,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-04 14:52:59
+-- Dump completed on 2018-04-04 16:31:32
