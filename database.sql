@@ -232,9 +232,22 @@ CREATE TABLE `film_has_genre` (
 
 LOCK TABLES `film_has_genre` WRITE;
 /*!40000 ALTER TABLE `film_has_genre` DISABLE KEYS */;
-INSERT INTO `film_has_genre` VALUES (1,1),(2,1),(3,2),(4,2),(5,2),(9,2),(11,2),(1,3),(2,3),(3,3),(11,3),(10,4),(6,5),(12,5),(13,5),(6,6),(7,7),(4,8),(8,8);
+INSERT INTO `film_has_genre` VALUES (1,1),(2,1),(6,1),(3,2),(4,2),(5,2),(9,2),(11,2),(1,3),(2,3),(3,3),(11,3),(10,4),(12,5),(13,5),(6,6),(7,7),(4,8),(8,8);
 /*!40000 ALTER TABLE `film_has_genre` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `films_in_genre`
+--
+
+DROP TABLE IF EXISTS `films_in_genre`;
+/*!50001 DROP VIEW IF EXISTS `films_in_genre`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `films_in_genre` AS SELECT 
+ 1 AS `Genre`,
+ 1 AS `Films`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary view structure for view `films_in_library`
@@ -339,6 +352,37 @@ INSERT INTO `rentaldetails` VALUES (1,1,2,NULL),(2,11,3,NULL),(3,12,4,NULL),(4,1
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `show_film_in_genre`
+--
+
+DROP TABLE IF EXISTS `show_film_in_genre`;
+/*!50001 DROP VIEW IF EXISTS `show_film_in_genre`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `show_film_in_genre` AS SELECT 
+ 1 AS `Genre`,
+ 1 AS `Film`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Final view structure for view `films_in_genre`
+--
+
+/*!50001 DROP VIEW IF EXISTS `films_in_genre`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `films_in_genre` AS select `g`.`genreType` AS `Genre`,group_concat(distinct `f`.`title` separator ', ') AS `Films` from ((`film_has_genre` `fg` left join `genre` `g` on((`g`.`idGenre` = `fg`.`idGenre`))) left join `film` `f` on((`f`.`idFilm` = `fg`.`idFilm`))) group by `g`.`genreType` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `films_in_library`
 --
 
@@ -355,6 +399,24 @@ UNLOCK TABLES;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `show_film_in_genre`
+--
+
+/*!50001 DROP VIEW IF EXISTS `show_film_in_genre`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `show_film_in_genre` AS select `g`.`genreType` AS `Genre`,group_concat(distinct `f`.`title` separator ', ') AS `Film` from ((`film_has_genre` `fg` left join `genre` `g` on((`g`.`idGenre` = `fg`.`idGenre`))) left join `film` `f` on((`f`.`idFilm` = `fg`.`idFilm`))) group by `g`.`genreType` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -365,4 +427,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-03 20:35:37
+-- Dump completed on 2018-04-04 13:51:02

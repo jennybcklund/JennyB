@@ -4,7 +4,7 @@ SELECT * FROM films_in_library;
 
 -- Fråga 2: Vilka filmer som finns i en viss genre.
 
-SELECT * FROM products;
+SELECT * FROM films_in_genre;
 
 -- Fråga : Vilka filmer som är uthyrda, vem som hyrde dem (kund) och vem som hyrde ut dem (anställd).
 
