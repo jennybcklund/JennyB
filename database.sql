@@ -139,7 +139,6 @@ CREATE TABLE `film` (
   `title` varchar(45) COLLATE utf8mb4_swedish_ci NOT NULL,
   `description` varchar(500) COLLATE utf8mb4_swedish_ci DEFAULT NULL,
   `publicationYear` year(4) DEFAULT NULL,
-  `inStock` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idFilm`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -150,7 +149,7 @@ CREATE TABLE `film` (
 
 LOCK TABLES `film` WRITE;
 /*!40000 ALTER TABLE `film` DISABLE KEYS */;
-INSERT INTO `film` VALUES (1,'Thor: Ragnarök','Thor is imprisoned on the planet Sakaar, and must race against time to return to Asgard and stop Ragnarök, the destruction of his world, which is at the hands of the powerful and ruthless villain Hela.',2017,0),(2,'Star Wars: The Last Jedi','Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares for battle with the First Order.',2017,0),(3,'Justice League','Fueled by his restored faith in humanity and inspired by Superman\'s selfless act, Bruce Wayne enlists the help of his newfound ally, Diana Prince, to face an even greater enemy.',2017,0),(4,'Deadpool','A fast-talking mercenary with a morbid sense of humor is subjected to a rogue experiment that leaves him with accelerated healing powers and a quest for revenge.',2016,0),(5,'Suicide Squad','A secret government agency recruits some of the most dangerous incarcerated super-villains to form a defensive task force. Their first mission: save the world from the apocalypse.',2016,1),(6,'Avengers: Age of Ultron','When Tony Stark and Bruce Banner try to jump-start a dormant peacekeeping program called Ultron, things go horribly wrong and it\'s up to Earth\'s mightiest heroes to stop the villainous Ultron from enacting his terrible plan.',2015,0),(7,'Star Wars: The Force Awakens','Three decades after the Empire\'s defeat, a new threat arises in the militant First Order. Stormtrooper defector Finn and the scavenger Rey are caught up in the Resistance\'s search for the missing Luke Skywalker.',2015,1),(8,'The Man from U.N.C.L.E.','In the early 1960s, CIA agent Napoleon Solo and KGB operative Illya Kuryakin participate in a joint mission against a mysterious criminal organization, which is working to proliferate nuclear weapons.',2015,1),(9,'Guardians of the Galaxy','A group of intergalactic criminals are forced to work together to stop a fanatical warrior from taking control of the universe.',2014,1),(10,'Gone Girl','With his wife\'s disappearance having become the focus of an intense media circus, a man sees the spotlight turned on him when it\'s suspected that he may not be innocent.',2014,1),(11,'Divergent','In a world divided by factions based on virtues, Tris learns she\'s Divergent and won\'t fit in. When she discovers a plot to destroy Divergents, Tris and the mysterious Four must find out what makes Divergents dangerous before it\'s too late.',2014,1),(12,'Lego-filmen','An ordinary LEGO construction worker, thought to be the prophesied as \"special\", is recruited to join a quest to stop an evil tyrant from gluing the LEGO universe into eternal stasis.',2014,1),(13,'Zootropolis','In a city of anthropomorphic animals, a rookie bunny cop and a cynical con artist fox must work together to uncover a conspiracy.',2016,1);
+INSERT INTO `film` VALUES (1,'Thor: Ragnarök','Thor is imprisoned on the planet Sakaar, and must race against time to return to Asgard and stop Ragnarök, the destruction of his world, which is at the hands of the powerful and ruthless villain Hela.',2017),(2,'Star Wars: The Last Jedi','Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares for battle with the First Order.',2017),(3,'Justice League','Fueled by his restored faith in humanity and inspired by Superman\'s selfless act, Bruce Wayne enlists the help of his newfound ally, Diana Prince, to face an even greater enemy.',2017),(4,'Deadpool','A fast-talking mercenary with a morbid sense of humor is subjected to a rogue experiment that leaves him with accelerated healing powers and a quest for revenge.',2016),(5,'Suicide Squad','A secret government agency recruits some of the most dangerous incarcerated super-villains to form a defensive task force. Their first mission: save the world from the apocalypse.',2016),(6,'Avengers: Age of Ultron','When Tony Stark and Bruce Banner try to jump-start a dormant peacekeeping program called Ultron, things go horribly wrong and it\'s up to Earth\'s mightiest heroes to stop the villainous Ultron from enacting his terrible plan.',2015),(7,'Star Wars: The Force Awakens','Three decades after the Empire\'s defeat, a new threat arises in the militant First Order. Stormtrooper defector Finn and the scavenger Rey are caught up in the Resistance\'s search for the missing Luke Skywalker.',2015),(8,'The Man from U.N.C.L.E.','In the early 1960s, CIA agent Napoleon Solo and KGB operative Illya Kuryakin participate in a joint mission against a mysterious criminal organization, which is working to proliferate nuclear weapons.',2015),(9,'Guardians of the Galaxy','A group of intergalactic criminals are forced to work together to stop a fanatical warrior from taking control of the universe.',2014),(10,'Gone Girl','With his wife\'s disappearance having become the focus of an intense media circus, a man sees the spotlight turned on him when it\'s suspected that he may not be innocent.',2014),(11,'Divergent','In a world divided by factions based on virtues, Tris learns she\'s Divergent and won\'t fit in. When she discovers a plot to destroy Divergents, Tris and the mysterious Four must find out what makes Divergents dangerous before it\'s too late.',2014),(12,'Lego-filmen','An ordinary LEGO construction worker, thought to be the prophesied as \"special\", is recruited to join a quest to stop an evil tyrant from gluing the LEGO universe into eternal stasis.',2014),(13,'Zootropolis','In a city of anthropomorphic animals, a rookie bunny cop and a cynical con artist fox must work together to uncover a conspiracy.',2016);
 /*!40000 ALTER TABLE `film` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,6 +238,33 @@ INSERT INTO `film_has_genre` VALUES (1,1),(2,1),(6,1),(3,2),(4,2),(5,2),(9,2),(1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `filmcopy`
+--
+
+DROP TABLE IF EXISTS `filmcopy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filmcopy` (
+  `idFilmCopy` int(11) NOT NULL AUTO_INCREMENT,
+  `inStock` tinyint(1) unsigned DEFAULT NULL,
+  `idFilm` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idFilmCopy`),
+  KEY `fk_filmCopy_Film1_idx` (`idFilm`),
+  CONSTRAINT `fk_filmCopy_Film1` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `filmcopy`
+--
+
+LOCK TABLES `filmcopy` WRITE;
+/*!40000 ALTER TABLE `filmcopy` DISABLE KEYS */;
+INSERT INTO `filmcopy` VALUES (161,0,1),(162,0,1),(163,0,2),(164,0,3),(165,0,3),(166,1,3),(167,1,4),(168,1,5),(169,1,6),(170,1,7),(171,1,8),(172,1,8),(173,1,9),(174,1,10),(175,1,11),(176,1,12),(177,1,12),(178,1,12),(179,1,13),(180,1,13);
+/*!40000 ALTER TABLE `filmcopy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Temporary view structure for view `films_in_genre`
 --
 
@@ -278,7 +304,8 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `films_rented` AS SELECT 
  1 AS `dueDate`,
- 1 AS `FilmRented`,
+ 1 AS `Serialnr`,
+ 1 AS `Film`,
  1 AS `Customer`,
  1 AS `Employee`*/;
 SET character_set_client = @saved_cs_client;
@@ -348,13 +375,13 @@ DROP TABLE IF EXISTS `rentaldetails`;
 CREATE TABLE `rentaldetails` (
   `idrentalDetails` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `idRental` int(10) unsigned NOT NULL,
-  `idFilm` int(10) unsigned NOT NULL,
   `returnDate` date DEFAULT NULL,
+  `idFilmCopy` int(11) NOT NULL,
   PRIMARY KEY (`idrentalDetails`),
   KEY `fk_rentalDetails_Rental1_idx` (`idRental`),
-  KEY `fk_rentalDetails_Film1_idx` (`idFilm`),
-  CONSTRAINT `fk_rentalDetails_Film1` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_rentalDetails_Rental1` FOREIGN KEY (`idRental`) REFERENCES `rental` (`idRental`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_rentalDetails_filmCopy1_idx1` (`idFilmCopy`),
+  CONSTRAINT `fk_rentalDetails_Rental1` FOREIGN KEY (`idRental`) REFERENCES `rental` (`idRental`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_rentalDetails_filmCopy1` FOREIGN KEY (`idFilmCopy`) REFERENCES `filmcopy` (`idFilmCopy`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -364,7 +391,7 @@ CREATE TABLE `rentaldetails` (
 
 LOCK TABLES `rentaldetails` WRITE;
 /*!40000 ALTER TABLE `rentaldetails` DISABLE KEYS */;
-INSERT INTO `rentaldetails` VALUES (1,1,2,NULL),(2,11,3,NULL),(3,12,4,NULL),(4,10,6,NULL),(5,2,1,NULL),(6,3,4,'2018-03-29'),(7,4,10,'2018-03-07'),(8,5,5,'2018-02-23'),(9,6,1,'2018-03-17'),(10,7,9,'2018-01-11'),(11,8,12,'2018-03-02'),(12,9,13,'2018-01-16');
+INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163),(4,10,NULL,164),(5,2,NULL,165),(6,3,'2018-03-29',166),(7,4,'2018-03-07',167),(8,5,'2018-02-23',168),(9,6,'2018-03-17',169),(10,7,'2018-01-11',170),(11,8,'2018-03-02',171),(12,9,'2018-01-16',171);
 /*!40000 ALTER TABLE `rentaldetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +444,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `films_rented` AS select `r`.`dueDate` AS `dueDate`,`f`.`title` AS `FilmRented`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee` from ((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `film` `f` on((`f`.`idFilm` = `rd`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `r`.`dueDate` */;
+/*!50001 VIEW `films_rented` AS select `r`.`dueDate` AS `dueDate`,`fc`.`idFilmCopy` AS `Serialnr`,`f`.`title` AS `Film`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee` from (((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `filmcopy` `fc` on((`fc`.`idFilmCopy` = `rd`.`idFilmCopy`))) join `film` `f` on((`fc`.`idFilm` = `f`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `r`.`dueDate` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -431,4 +458,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-04 16:57:26
+-- Dump completed on 2018-04-04 18:21:45
