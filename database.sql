@@ -383,7 +383,7 @@ CREATE TABLE `rental` (
   KEY `fk_Rental_Employee1_idx` (`idEmployee`),
   CONSTRAINT `fk_Rental_Customer1` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Rental_Employee1` FOREIGN KEY (`idEmployee`) REFERENCES `employee` (`idEmployee`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,7 +392,7 @@ CREATE TABLE `rental` (
 
 LOCK TABLES `rental` WRITE;
 /*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` VALUES (1,1,'2018-04-02','2018-04-06',9),(2,3,'2018-04-01','2018-04-05',9),(3,2,'2018-03-25','2018-03-29',1),(4,1,'2018-03-03','2018-03-07',9),(5,4,'2018-02-19','2018-02-23',4),(6,5,'2018-03-13','2018-03-17',9),(7,2,'2018-01-05','2018-01-09',3),(8,10,'2018-03-29','2018-03-02',3),(9,6,'2018-01-10','2018-01-14',1),(10,9,'2018-04-02','2018-04-06',5),(11,2,'2018-03-29','2018-04-01',1),(12,7,'2018-03-29','2018-04-01',9),(13,9,'2018-04-09','2018-04-13',4),(14,5,'2018-04-01','2018-04-05',1);
+INSERT INTO `rental` VALUES (1,1,'2018-04-02','2018-04-06',9),(2,3,'2018-04-01','2018-04-05',9),(3,2,'2018-03-25','2018-03-29',1),(4,1,'2018-03-03','2018-03-07',9),(5,4,'2018-02-19','2018-02-23',4),(6,5,'2018-03-13','2018-03-17',9),(7,2,'2018-01-05','2018-01-09',3),(8,10,'2018-03-29','2018-03-02',3),(9,6,'2018-01-10','2018-01-14',1),(10,9,'2018-04-02','2018-04-06',5),(11,2,'2018-03-29','2018-04-01',1),(12,7,'2018-03-29','2018-04-01',9),(13,9,'2018-04-09','2018-04-13',4),(14,5,'2018-04-01','2018-04-05',1),(15,5,'2018-03-01','2018-03-05',3),(16,7,'2018-03-07','2018-03-11',9),(17,2,'2018-03-15','2018-03-20',1),(18,2,'2017-03-15','2017-03-20',1);
 /*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -413,7 +413,7 @@ CREATE TABLE `rentaldetails` (
   KEY `fk_rentalDetails_filmCopy1_idx1` (`idFilmCopy`),
   CONSTRAINT `fk_rentalDetails_Rental1` FOREIGN KEY (`idRental`) REFERENCES `rental` (`idRental`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_rentalDetails_filmCopy1` FOREIGN KEY (`idFilmCopy`) REFERENCES `filmcopy` (`idFilmCopy`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,9 +422,22 @@ CREATE TABLE `rentaldetails` (
 
 LOCK TABLES `rentaldetails` WRITE;
 /*!40000 ALTER TABLE `rentaldetails` DISABLE KEYS */;
-INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163),(4,10,NULL,164),(5,2,NULL,165),(6,3,'2018-03-29',166),(7,4,'2018-03-07',167),(8,5,'2018-02-23',168),(9,6,'2018-03-17',169),(10,7,'2018-01-11',170),(11,8,'2018-03-02',171),(12,9,'2018-01-16',171),(13,14,'2018-04-05',176),(14,14,NULL,180),(15,13,NULL,179),(16,13,NULL,171);
+INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163),(4,10,NULL,164),(5,2,NULL,165),(6,3,'2018-03-29',166),(7,4,'2018-03-07',167),(8,5,'2018-02-23',168),(9,6,'2018-03-17',169),(10,7,'2018-01-11',170),(11,8,'2018-03-02',171),(12,9,'2018-01-16',171),(13,14,'2018-04-05',176),(14,14,NULL,180),(15,13,NULL,179),(16,13,NULL,171),(17,15,'2018-03-05',171),(18,16,NULL,171),(19,17,'2018-03-20',162),(20,18,'2017-03-20',162);
 /*!40000 ALTER TABLE `rentaldetails` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `toplist_last_month`
+--
+
+DROP TABLE IF EXISTS `toplist_last_month`;
+/*!50001 DROP VIEW IF EXISTS `toplist_last_month`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `toplist_last_month` AS SELECT 
+ 1 AS `Top5_last_month`,
+ 1 AS `Times_rented`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Final view structure for view `employee_trackrecord`
@@ -515,6 +528,24 @@ UNLOCK TABLES;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `toplist_last_month`
+--
+
+/*!50001 DROP VIEW IF EXISTS `toplist_last_month`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `toplist_last_month` AS select `f`.`title` AS `Top5_last_month`,count(`rd`.`idFilmCopy`) AS `Times_rented` from (((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `filmcopy` `fc` on((`fc`.`idFilmCopy` = `rd`.`idFilmCopy`))) join `film` `f` on((`f`.`idFilm` = `fc`.`idFilm`))) where ((year(`r`.`rentDate`) = year((curdate() - interval 1 month))) and (month(`r`.`rentDate`) = month((curdate() - interval 1 month)))) group by `f`.`idFilm` order by `Times_rented` desc limit 5 */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -525,4 +556,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-05 12:04:37
+-- Dump completed on 2018-04-05 14:48:28
