@@ -295,6 +295,23 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `films_overdue`
+--
+
+DROP TABLE IF EXISTS `films_overdue`;
+/*!50001 DROP VIEW IF EXISTS `films_overdue`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `films_overdue` AS SELECT 
+ 1 AS `Serialnumber`,
+ 1 AS `title`,
+ 1 AS `Customer`,
+ 1 AS `rentDate`,
+ 1 AS `dueDate`,
+ 1 AS `DaysOverdue`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `films_rented`
 --
 
@@ -352,7 +369,7 @@ CREATE TABLE `rental` (
   KEY `fk_Rental_Employee1_idx` (`idEmployee`),
   CONSTRAINT `fk_Rental_Customer1` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Rental_Employee1` FOREIGN KEY (`idEmployee`) REFERENCES `employee` (`idEmployee`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +378,7 @@ CREATE TABLE `rental` (
 
 LOCK TABLES `rental` WRITE;
 /*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` VALUES (1,1,'2018-04-02','2018-04-06',9),(2,3,'2018-04-01','2018-04-05',9),(3,2,'2018-03-25','2018-03-29',1),(4,1,'2018-03-03','2018-03-07',9),(5,4,'2018-02-19','2018-02-23',4),(6,5,'2018-03-13','2018-03-17',9),(7,2,'2018-01-05','2018-01-09',3),(8,10,'2018-03-29','2018-03-02',3),(9,6,'2018-01-10','2018-01-14',1),(10,9,'2018-04-02','2018-04-06',5),(11,2,'2018-03-29','2018-04-01',1),(12,7,'2018-03-29','2018-04-01',9);
+INSERT INTO `rental` VALUES (1,1,'2018-04-02','2018-04-06',9),(2,3,'2018-04-01','2018-04-05',9),(3,2,'2018-03-25','2018-03-29',1),(4,1,'2018-03-03','2018-03-07',9),(5,4,'2018-02-19','2018-02-23',4),(6,5,'2018-03-13','2018-03-17',9),(7,2,'2018-01-05','2018-01-09',3),(8,10,'2018-03-29','2018-03-02',3),(9,6,'2018-01-10','2018-01-14',1),(10,9,'2018-04-02','2018-04-06',5),(11,2,'2018-03-29','2018-04-01',1),(12,7,'2018-03-29','2018-04-01',9),(13,9,'2018-04-09','2018-04-13',4),(14,5,'2018-04-01','2018-04-05',1);
 /*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -382,7 +399,7 @@ CREATE TABLE `rentaldetails` (
   KEY `fk_rentalDetails_filmCopy1_idx1` (`idFilmCopy`),
   CONSTRAINT `fk_rentalDetails_Rental1` FOREIGN KEY (`idRental`) REFERENCES `rental` (`idRental`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_rentalDetails_filmCopy1` FOREIGN KEY (`idFilmCopy`) REFERENCES `filmcopy` (`idFilmCopy`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +408,7 @@ CREATE TABLE `rentaldetails` (
 
 LOCK TABLES `rentaldetails` WRITE;
 /*!40000 ALTER TABLE `rentaldetails` DISABLE KEYS */;
-INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163),(4,10,NULL,164),(5,2,NULL,165),(6,3,'2018-03-29',166),(7,4,'2018-03-07',167),(8,5,'2018-02-23',168),(9,6,'2018-03-17',169),(10,7,'2018-01-11',170),(11,8,'2018-03-02',171),(12,9,'2018-01-16',171);
+INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163),(4,10,NULL,164),(5,2,NULL,165),(6,3,'2018-03-29',166),(7,4,'2018-03-07',167),(8,5,'2018-02-23',168),(9,6,'2018-03-17',169),(10,7,'2018-01-11',170),(11,8,'2018-03-02',171),(12,9,'2018-01-16',171),(13,14,'2018-04-05',176),(14,14,NULL,180),(15,13,NULL,179),(16,13,NULL,171);
 /*!40000 ALTER TABLE `rentaldetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -432,6 +449,24 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `films_overdue`
+--
+
+/*!50001 DROP VIEW IF EXISTS `films_overdue`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `films_overdue` AS select `rd`.`idFilmCopy` AS `Serialnumber`,`f`.`title` AS `title`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,`r`.`rentDate` AS `rentDate`,`r`.`dueDate` AS `dueDate`,(to_days(curdate()) - to_days(`r`.`dueDate`)) AS `DaysOverdue` from ((((`rental` `r` join `rentaldetails` `rd` on((`rd`.`idRental` = `r`.`idRental`))) join `filmcopy` `fc` on((`fc`.`idFilmCopy` = `rd`.`idFilmCopy`))) join `film` `f` on((`f`.`idFilm` = `fc`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) where ((`r`.`dueDate` < curdate()) and isnull((`rd`.`returnDate` = `rd`.`returnDate`))) order by `r`.`dueDate` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `films_rented`
 --
 
@@ -458,4 +493,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-04 18:21:45
+-- Dump completed on 2018-04-05 11:11:33

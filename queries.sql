@@ -12,7 +12,7 @@ SELECT * FROM films_rented;
 
 -- Fråga 4: Vilka filmer som har gått över tiden, dvs filmer som inte har blivit återlämnade trots att de borde vara det, tillsammans med namnet på kunden som har hyrt den.
 
-SELECT * FROM products;
+SELECT * FROM films_overdue;
 
 -- Fråga 5: En lista över alla anställda och hur många filmer varje anställd har hyrt ut.
 
