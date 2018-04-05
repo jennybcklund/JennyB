@@ -16,7 +16,7 @@ SELECT * FROM films_overdue;
 
 -- Fråga 5: En lista över alla anställda och hur många filmer varje anställd har hyrt ut.
 
-SELECT * FROM products;
+SELECT * FROM employee_trackrecord;
 
 -- Fråga 6: En lista med statistik över de mest uthyrda filmerna den senaste månaden. Se fråga 10.
 

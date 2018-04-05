@@ -128,6 +128,20 @@ INSERT INTO `employee` VALUES (1,'Håkan','Håkansson','Säljare','073123456','h
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `employee_trackrecord`
+--
+
+DROP TABLE IF EXISTS `employee_trackrecord`;
+/*!50001 DROP VIEW IF EXISTS `employee_trackrecord`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `employee_trackrecord` AS SELECT 
+ 1 AS `Employee`,
+ 1 AS `title`,
+ 1 AS `FilmsRentedOut`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `film`
 --
 
@@ -320,11 +334,11 @@ DROP TABLE IF EXISTS `films_rented`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `films_rented` AS SELECT 
- 1 AS `dueDate`,
  1 AS `Serialnr`,
  1 AS `Film`,
  1 AS `Customer`,
- 1 AS `Employee`*/;
+ 1 AS `Employee`,
+ 1 AS `dueDate`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -413,6 +427,24 @@ INSERT INTO `rentaldetails` VALUES (1,1,NULL,161),(2,11,NULL,162),(3,12,NULL,163
 UNLOCK TABLES;
 
 --
+-- Final view structure for view `employee_trackrecord`
+--
+
+/*!50001 DROP VIEW IF EXISTS `employee_trackrecord`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `employee_trackrecord` AS select concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee`,`e`.`title` AS `title`,count(`r`.`idEmployee`) AS `FilmsRentedOut` from (`employee` `e` left join `rental` `r` on((`e`.`idEmployee` = `r`.`idEmployee`))) group by `e`.`idEmployee` order by `FilmsRentedOut` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `films_in_genre`
 --
 
@@ -479,7 +511,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `films_rented` AS select `r`.`dueDate` AS `dueDate`,`fc`.`idFilmCopy` AS `Serialnr`,`f`.`title` AS `Film`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee` from (((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `filmcopy` `fc` on((`fc`.`idFilmCopy` = `rd`.`idFilmCopy`))) join `film` `f` on((`fc`.`idFilm` = `f`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `r`.`dueDate` */;
+/*!50001 VIEW `films_rented` AS select `fc`.`idFilmCopy` AS `Serialnr`,`f`.`title` AS `Film`,concat(`c`.`fname`,' ',`c`.`lname`) AS `Customer`,concat(`e`.`fname`,' ',`e`.`lname`) AS `Employee`,`r`.`dueDate` AS `dueDate` from (((((`rentaldetails` `rd` left join `rental` `r` on((`r`.`idRental` = `rd`.`idRental`))) join `filmcopy` `fc` on((`fc`.`idFilmCopy` = `rd`.`idFilmCopy`))) join `film` `f` on((`fc`.`idFilm` = `f`.`idFilm`))) join `customer` `c` on((`c`.`idCustomer` = `r`.`idCustomer`))) join `employee` `e` on((`e`.`idEmployee` = `r`.`idEmployee`))) where isnull((`rd`.`returnDate` = `rd`.`returnDate`)) order by `r`.`dueDate` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -493,4 +525,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-05 11:11:33
+-- Dump completed on 2018-04-05 12:04:37
