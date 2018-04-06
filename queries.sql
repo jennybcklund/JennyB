@@ -34,7 +34,9 @@ SELECT f_check_if_past_due_date(166); -- False - film is not overdue/or rented
 
 -- Fråga 9: En Stored Procedure som ska köras när en film lämnas tillbaka. Den ska använda sig av ovanstående funktion för att göra någon form av markering/utskrift om filmen är återlämnad för sent.
 
-SELECT * FROM products;
+CALL sp_return_movie(161, @var_returnDate, @var_message); -- Film returned past due date
+CALL sp_return_movie(176, @var_returnDate, @var_message); -- Film returned in time (om queryn i fråga 7 har körts)
+SELECT @var_message;
 
 -- Fråga 10: Du ska underhålla en statistiktabell med hjälp av triggers. När du lämnar ut en fil ska det göras en notering om det i din statistiktabell. Du får inte lägga till informationen från din SP ovan, det ska skötas med triggers.
 
