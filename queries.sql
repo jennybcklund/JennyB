@@ -24,7 +24,8 @@ SELECT * FROM toplist_last_month;
 
 -- Fråga 7: En Stored Procedure som ska köras när en film lämnas ut. Ska alltså sätta filmen till uthyrd, vem som hyrt den osv.
 
-SELECT * FROM products;
+CALL sp_rent_movie(4, @var_rentDate, @var_dueDate, 4, @var_idRental, @var_returnDate, 176, @var_message);
+SELECT @var_rentDate, @var_dueDate, @var_idRental, @var_returnDate, @var_message;
 
 -- Fråga 8: Gör en funktion som tar en film som parameter och returnerar olika värden beroende på om filmen är sent inlämnad eller inte. Dvs, om du matar in film nr 345 ska du få tillbaka TRUE om filmen är uthyrd men borde vara tillbakalämnad, annars FALSE. (1 och 0 funkar också om det är lättare.)
 
