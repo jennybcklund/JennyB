@@ -264,7 +264,7 @@ CREATE TABLE `filmcopy` (
   `idFilm` int(10) unsigned NOT NULL,
   PRIMARY KEY (`idFilmCopy`),
   KEY `fk_filmCopy_Film1_idx` (`idFilm`),
-  CONSTRAINT `fk_filmCopy_Film1` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_filmCopy_Film1` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -556,4 +556,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-06 16:12:48
+-- Dump completed on 2018-04-08 18:19:11

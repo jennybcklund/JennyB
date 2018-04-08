@@ -20,12 +20,12 @@ SELECT * FROM employee_trackrecord;
 
 -- Fråga 6: En lista med statistik över de mest uthyrda filmerna den senaste månaden. Se fråga 10.
 
-SELECT * FROM toplist_last_month;
+SELECT * FROM toplist_last_month; -- Visar toplistan för mars
 
 -- Fråga 7: En Stored Procedure som ska köras när en film lämnas ut. Ska alltså sätta filmen till uthyrd, vem som hyrt den osv.
 
 CALL sp_rent_movie(4, @var_rentDate, @var_dueDate, 4, @var_idRental, @var_returnDate, 176, @var_message);
-SELECT @var_rentDate, @var_dueDate, @var_idRental, @var_returnDate, @var_message;
+SELECT @var_rentDate, @var_dueDate, @var_idRental, @var_returnDate, @var_message; -- Skriver ut vilka värden som upptaderats
 
 -- Fråga 8: Gör en funktion som tar en film som parameter och returnerar olika värden beroende på om filmen är sent inlämnad eller inte. Dvs, om du matar in film nr 345 ska du få tillbaka TRUE om filmen är uthyrd men borde vara tillbakalämnad, annars FALSE. (1 och 0 funkar också om det är lättare.)
 
@@ -36,7 +36,7 @@ SELECT f_check_if_past_due_date(166); -- False - film is not overdue/or rented
 
 CALL sp_return_movie(161, @var_returnDate, @var_message); -- Film returned past due date
 CALL sp_return_movie(176, @var_returnDate, @var_message); -- Film returned in time (om queryn i fråga 7 har körts)
-SELECT @var_message;
+SELECT @var_message; -- skriver ut meddelandet
 
 -- Fråga 10: Du ska underhålla en statistiktabell med hjälp av triggers. När du lämnar ut en fil ska det göras en notering om det i din statistiktabell. Du får inte lägga till informationen från din SP ovan, det ska skötas med triggers.
 
