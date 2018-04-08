@@ -440,6 +440,143 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping events for database 'jennyb'
+--
+
+--
+-- Dumping routines for database 'jennyb'
+--
+/*!50003 DROP FUNCTION IF EXISTS `f_check_if_past_due_date` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `f_check_if_past_due_date`(
+p_filmnr INT
+) RETURNS varchar(5) CHARSET utf8mb4
+BEGIN
+	DECLARE filminstock TINYINT(1);
+    DECLARE var_status VARCHAR(10);
+	
+    SELECT COUNT(rd.idFilmCopy) INTO filminstock FROM rental r
+		INNER JOIN rentaldetails rd ON rd.idRental = r.idRental
+		INNER JOIN filmcopy fc ON fc.idFilmCopy = rd.idFilmCopy
+		WHERE r.dueDate < current_date()
+			AND rd.returnDate = rd.returnDate is null
+            AND rd.idFilmCopy = p_filmnr;
+	IF (filminstock = 1)
+	THEN    
+		SET var_status = "True";
+	ELSE
+		SET var_status = "False";
+	END IF;
+RETURN (var_status);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_rent_movie` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_rent_movie`(
+IN var_idCustomer INT,
+OUT var_rentDate DATE,
+OUT var_dueDate DATE,
+IN var_idEmployee INT,
+OUT var_idRental INT,
+OUT var_returnDate DATE,
+IN var_idFilmCopy INT,
+OUT var_message VARCHAR(45)
+)
+BEGIN
+	DECLARE filminstock TINYINT(1);
+	SELECT inStock INTO filminstock FROM filmcopy f WHERE var_idFilmCopy = f.idFilmCopy;
+   IF (filminstock = 1)
+    THEN    
+        SET var_rentDate = CURRENT_DATE();
+		SET var_dueDate = DATE(DATE_ADD(var_rentDate, INTERVAL 4 DAY));
+    
+		INSERT INTO rental (`idCustomer`, `rentDate`, `dueDate`, `idEmployee`)
+		VALUES (var_idCustomer, var_rentDate, var_dueDate, var_idEmployee);
+        
+        SET var_idRental = LAST_INSERT_ID();
+		SET var_returnDate =  NULL;
+	
+		INSERT INTO rentaldetails (`idRental`, `returnDate`, `idFilmCopy`)
+		VALUES (var_idRental, var_returnDate, var_idFilmCopy);
+		
+		UPDATE filmcopy SET inStock = 0 
+		WHERE var_idFilmCopy = idFilmCopy;
+        
+        SET var_message = "Film is now rented";
+	ELSE SET var_message = "Film is not in stock";
+	END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_return_movie` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_return_movie`(
+IN var_idFilmCopy INT,
+OUT var_returnDate DATE,
+OUT var_message VARCHAR(45)
+)
+BEGIN
+	DECLARE filminstock TINYINT(1);
+	SELECT inStock INTO filminstock FROM filmcopy f WHERE var_idFilmCopy = f.idFilmCopy;
+	IF (filminstock = 0)
+    THEN    
+		SET var_returnDate = CURRENT_DATE();
+	
+		UPDATE rentaldetails SET returnDate = var_returndate
+        WHERE var_idFilmCopy = idFilmCopy;
+		
+		UPDATE filmcopy SET inStock = 1 
+		WHERE var_idFilmCopy = idFilmCopy;
+        
+		CASE
+            WHEN f_check_if_past_due_date(var_idFilmCopy) = "True"
+            THEN SET var_message = "Film returned past due date";
+			ELSE SET var_message = "Film returned in time";
+		END CASE;
+            
+	ELSE SET var_message = "Film is already returned";
+	END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
 -- Final view structure for view `employee_trackrecord`
 --
 
@@ -556,4 +693,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-08 18:19:11
+-- Dump completed on 2018-04-08 21:56:10
